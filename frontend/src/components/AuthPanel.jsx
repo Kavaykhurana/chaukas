@@ -26,7 +26,7 @@ export default function AuthPanel({ t, lang, onAuth, note }) {
 
   return (
     <section className="card mx-auto max-w-md">
-      {note && <p className="mb-4 text-sm text-slate-300">{note}</p>}
+      {note && <p className="mb-4 text-sm text-slatem">{note}</p>}
       <form onSubmit={submit} className="space-y-3">
         {mode === 'register' && (
           <div>
@@ -42,15 +42,15 @@ export default function AuthPanel({ t, lang, onAuth, note }) {
           <label className="label" htmlFor="pw">{t('password')}</label>
           <input id="pw" type="password" className="field" required minLength={mode === 'register' ? 8 : 1} value={form.password} onChange={set('password')} autoComplete={mode === 'register' ? 'new-password' : 'current-password'} />
         </div>
-        {error && <p role="alert" className="text-sm text-danger">{error}</p>}
+        {error && <p role="alert" className="text-sm text-ink">{error}</p>}
         <button className="btn-primary w-full" disabled={busy}>{mode === 'register' ? t('register') : t('signIn')}</button>
       </form>
       <div className="mt-4 flex flex-col gap-2 text-center text-sm">
-        <button className="text-slate-300 underline-offset-4 hover:underline" onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError(''); }}>
+        <button className="text-slatem underline-offset-4 hover:underline" onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError(''); }}>
           {mode === 'login' ? t('noAccount') : t('haveAccount')}
         </button>
         <button
-          className="text-saffron underline-offset-4 hover:underline"
+          className="text-ink underline-offset-4 hover:underline"
           disabled={busy}
           onClick={() => submit(null, { email: 'parent@demo.chaukas.in', password: 'chaukas-demo' })}
         >

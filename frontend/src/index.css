@@ -2,16 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-html { scroll-behavior: smooth; }
-body { min-height: 100vh; background: radial-gradient(1200px 500px at 50% -10%, #17233b 0%, #0b1220 60%); }
+:root { --focus: #c6613f; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; min-height: 100vh;
+  background: #f0eee6; color: #141413;
+  font-family: "Source Serif 4", Charter, Georgia, "Noto Sans Devanagari", "Noto Sans Gurmukhi", serif;
+  font-size: 18px; line-height: 1.4;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+::selection { background: #f5e3c7; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 
 @layer components {
-  .card { @apply rounded-2xl border border-edge bg-panel/90 p-4 sm:p-5 shadow-lg shadow-black/20; }
-  .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-saffron disabled:cursor-not-allowed disabled:opacity-50; }
-  .btn-primary { @apply btn bg-saffron text-ink hover:brightness-110; }
-  .btn-ghost { @apply btn border border-edge text-slate-200 hover:bg-white/5; }
-  .field { @apply w-full rounded-xl border border-edge bg-ink/70 px-3 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:border-saffron focus:outline-none focus:ring-1 focus:ring-saffron; }
-  .label { @apply mb-1 block text-xs font-medium uppercase tracking-wide text-slate-400; }
+  /* Paper, not screen: tone + 1px hairline, never shadows. */
+  .card { @apply rounded-[24px] border border-stone bg-paper p-6 sm:p-8; }
+  .panel { @apply rounded-[24px] bg-oat p-6 sm:p-8; }
+
+  .btn { @apply inline-flex items-center justify-center gap-2 font-sans text-base font-medium leading-none tracking-[-0.005em] transition-colors duration-200 ease-out disabled:cursor-not-allowed; }
+  /* Filled: bottom-corners-only radius is the signature. */
+  .btn-ivory { @apply btn rounded-t-none rounded-b-lg border border-stone bg-paper px-7 py-3 text-ink hover:bg-oat active:bg-stone disabled:border-stone disabled:bg-ivory disabled:text-cloud; }
+  /* Clay: the one consequential action per view. Ink text keeps AA contrast. */
+  .btn-primary { @apply btn rounded-t-none rounded-b-lg bg-clay px-7 py-3 text-ink hover:bg-claydeep active:bg-[#b5552f] disabled:border disabled:border-stone disabled:bg-ivory disabled:text-cloud; }
+  .btn-ghost { @apply btn rounded-xl border border-cloud bg-transparent px-4 py-2 text-ink hover:border-ink hover:bg-oat active:bg-stone disabled:border-stone disabled:text-cloudl; }
+
+  .field { @apply w-full rounded-lg border border-stone bg-paper px-4 py-3 font-sans text-base text-ink placeholder:text-cloud hover:border-cloud focus:border-ink focus:outline-2 focus:outline-offset-2 focus:outline-claydeep; }
+  .label { @apply mb-2 block font-sans text-xs font-semibold uppercase tracking-[0.06em] text-ink; }
+  .eyebrow { @apply font-sans text-xs font-semibold uppercase tracking-[0.06em] text-slatem; }
+  .note { @apply rounded-r-lg border-l-2 border-ink bg-oat p-4 text-[18px]; }
+  .display { @apply font-sans text-[40px] font-bold leading-[1.1] tracking-[-0.003em] md:text-[61px]; }
 }
 
-mark.hl { background: rgba(239, 68, 68, 0.28); color: #fecaca; border-radius: 4px; padding: 0 2px; }
+mark.hl { background: #f5e3c7; color: #141413; border-bottom: 2px solid #141413; padding: 0 2px; }

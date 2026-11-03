@@ -14,13 +14,13 @@ function CopyBox({ t, title, text, subject }) {
     }
   }
   return (
-    <div className="rounded-xl border border-edge bg-ink/60">
-      <div className="flex items-center justify-between border-b border-edge px-3 py-2">
+    <div className="rounded-xl border border-stone bg-paper">
+      <div className="flex items-center justify-between border-b border-stone px-3 py-2">
         <h4 className="text-sm font-semibold">{title}</h4>
         <button type="button" className="btn-ghost !px-3 !py-1 text-xs" onClick={copy}>{copied ? t('copied') : t('copy')}</button>
       </div>
-      {subject && <p className="border-b border-edge px-3 py-2 text-xs text-slate-400">{t('subject')}: <span className="text-slate-200">{subject}</span></p>}
-      <pre className="max-h-72 overflow-auto whitespace-pre-wrap break-words px-3 py-3 font-sans text-sm leading-relaxed text-slate-200">{text}</pre>
+      {subject && <p className="border-b border-stone px-3 py-2 text-xs text-slatem">{t('subject')}: <span className="text-ink">{subject}</span></p>}
+      <pre className="max-h-72 overflow-auto whitespace-pre-wrap break-words px-3 py-3 font-sans text-sm leading-relaxed text-ink">{text}</pre>
     </div>
   );
 }
@@ -40,17 +40,17 @@ function Countdown({ t, incident }) {
   }, [incident.id, incident.minutesLeft]);
 
   if (left <= 0) {
-    return <div className="rounded-xl border border-warn/50 bg-warn/10 p-3 text-sm text-warn">{t('windowOver')}</div>;
+    return <div className="rounded-xl border border-ink bg-manilla p-3 text-sm text-ink">{t('windowOver')}</div>;
   }
   const pct = Math.min(100, Math.round((left / 60) * 100));
   return (
-    <div className="rounded-xl border border-danger/50 bg-danger/10 p-4">
+    <div className="note !rounded-xl">
       <div className="flex items-baseline gap-2">
-        <span className="font-mono text-4xl font-bold text-danger">{left}</span>
-        <span className="text-sm text-slate-200">{t('minLeft')}</span>
+        <span className="font-serif text-[61px] leading-none text-ink">{left}</span>
+        <span className="text-sm text-ink">{t('minLeft')}</span>
       </div>
-      <div className="mt-3 h-2 overflow-hidden rounded-full bg-black/30" role="progressbar" aria-valuenow={left} aria-valuemin={0} aria-valuemax={60}>
-        <div className="h-full rounded-full bg-danger transition-all" style={{ width: `${pct}%` }} />
+      <div className="mt-3 h-2 overflow-hidden rounded-full bg-stone" role="progressbar" aria-valuenow={left} aria-valuemin={0} aria-valuemax={60}>
+        <div className="h-full rounded-full bg-ink transition-all" style={{ width: `${pct}%` }} />
       </div>
     </div>
   );
@@ -58,9 +58,9 @@ function Countdown({ t, incident }) {
 
 function Fact({ label, value, missing, miss }) {
   return (
-    <div className="rounded-xl border border-edge bg-ink/60 p-3">
+    <div className="rounded-xl border border-stone bg-paper p-3">
       <p className="label !mb-0.5">{label}</p>
-      <p className={`break-all font-mono text-sm ${missing ? 'text-warn' : 'text-slate-100'}`}>{missing ? miss : value}</p>
+      <p className={`break-all font-mono text-sm ${missing ? 'text-ink' : 'text-ink'}`}>{missing ? miss : value}</p>
     </div>
   );
 }
@@ -111,48 +111,48 @@ export default function GoldenTab({ t, lang }) {
         <Countdown t={t} incident={inc} />
 
         <section className="card space-y-3">
-          <h2 className="text-lg font-semibold">{t('facts')}</h2>
+          <h2 className="font-sans text-[24px] font-semibold leading-[1.3]">{t('facts')}</h2>
           <div className="grid gap-2 sm:grid-cols-2">
             <Fact label={t('amount')} value={f.amount != null ? `₹${Number(f.amount).toLocaleString('en-IN')}` : ''} missing={miss('amount')} miss={t('missing')} />
             <Fact label={t('utr')} value={f.utr} missing={miss('utr')} miss={t('missing')} />
             <Fact label={t('payee')} value={f.payeeUpi || f.payeePhone} missing={miss('payee')} miss={t('missing')} />
             <Fact label={t('bank')} value={f.bank} missing={miss('bank')} miss={t('missing')} />
           </div>
-          <p className="text-xs text-slate-400">{t('paidAt')}: {new Date(f.paidAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} IST</p>
+          <p className="text-xs text-slatem">{t('paidAt')}: {new Date(f.paidAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} IST</p>
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-lg font-semibold">{t('stepsTitle')}</h2>
-          <p className="text-sm text-slate-300">{t('s1')}</p>
+          <h2 className="font-sans text-[24px] font-semibold leading-[1.3]">{t('stepsTitle')}</h2>
+          <p className="text-sm text-slatem">{t('s1')}</p>
           <CopyBox t={t} title="1930" text={inc.kit.callScript} />
-          <p className="text-sm text-slate-300">{t('s2')}</p>
+          <p className="text-sm text-slatem">{t('s2')}</p>
           <CopyBox t={t} title="cybercrime.gov.in" text={inc.kit.complaintText} />
           <a className="btn-ghost" href="https://cybercrime.gov.in" target="_blank" rel="noreferrer noopener">{t('openPortal')} ↗</a>
-          <p className="text-sm text-slate-300">{t('s3')}</p>
+          <p className="text-sm text-slatem">{t('s3')}</p>
           <CopyBox t={t} title="Bank" subject={inc.kit.bankEmailSubject} text={inc.kit.bankEmailBody} />
-          <p className="text-sm text-slate-300">{t('s4')}</p>
+          <p className="text-sm text-slatem">{t('s4')}</p>
           <CopyBox t={t} title="UPI / PSP" text={inc.kit.scammerReport} />
           {inc.kit.checklist?.length > 0 && (
-            <ul className="list-disc space-y-1 pl-5 text-sm text-slate-300">
+            <ul className="list-disc space-y-1 pl-5 text-sm text-slatem">
               {inc.kit.checklist.map((c, i) => <li key={i}>{c}</li>)}
             </ul>
           )}
         </section>
 
         <section className="card space-y-3">
-          <p className="text-xs text-slate-400">{t('nothingFiled')}</p>
+          <p className="text-xs text-slatem">{t('nothingFiled')}</p>
           {inc.status === 'REPORTED' ? (
-            <p className="text-sm font-semibold text-emerald-400">✓ {t('reported')}</p>
+            <p className="text-sm font-semibold text-ink">Done — {t('reported')}</p>
           ) : (
             <>
-              <label className="flex items-start gap-2 text-sm text-slate-300">
+              <label className="flex items-start gap-2 text-sm text-slatem">
                 <input type="checkbox" className="mt-1" checked={share} onChange={(e) => setShare(e.target.checked)} />
                 {t('shareIntel')}
               </label>
               <button className="btn-primary" onClick={markReported}>{t('markReported')}</button>
             </>
           )}
-          {error && <p role="alert" className="text-sm text-danger">{error}</p>}
+          {error && <p role="alert" className="text-sm text-ink">{error}</p>}
           <button className="btn-ghost text-xs" onClick={() => { setInc(null); setNarrative(''); setImages([]); }}>＋</button>
         </section>
       </div>
@@ -162,8 +162,8 @@ export default function GoldenTab({ t, lang }) {
   return (
     <form onSubmit={submit} className="card space-y-4">
       <div>
-        <h2 className="text-lg font-semibold">{t('goldenTitle')}</h2>
-        <p className="mt-1 text-sm text-slate-400">{t('goldenHint')}</p>
+        <h2 className="font-sans text-[24px] font-semibold leading-[1.3]">{t('goldenTitle')}</h2>
+        <p className="mt-1 text-sm text-slatem">{t('goldenHint')}</p>
       </div>
       <div>
         <label className="label" htmlFor="narr">{t('narrative')}</label>
@@ -179,9 +179,9 @@ export default function GoldenTab({ t, lang }) {
           className="hidden"
           onChange={(e) => setImages(Array.from(e.target.files || []).slice(0, 4))}
         />
-        {images.length > 0 && <p className="mt-2 text-xs text-slate-400">{images.map((i) => i.name).join(', ')}</p>}
+        {images.length > 0 && <p className="mt-2 text-xs text-slatem">{images.map((i) => i.name).join(', ')}</p>}
       </div>
-      {error && <p role="alert" className="text-sm text-danger">{error}</p>}
+      {error && <p role="alert" className="text-sm text-ink">{error}</p>}
       <button className="btn-primary" disabled={busy || (!narrative.trim() && images.length === 0)}>{busy ? t('preparing') : t('prepare')}</button>
     </form>
   );

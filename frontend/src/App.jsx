@@ -70,50 +70,52 @@ export default function App() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 pb-24 pt-6 sm:pt-10">
-      <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
+    <div className="mx-auto max-w-[1000px] px-4 pb-24 pt-2 sm:px-8">
+      <header className="mb-12 flex flex-wrap items-center justify-between gap-3 border-b border-stone pb-4">
         <div className="flex items-center gap-3">
-          <img src="/favicon.svg" alt="" className="h-10 w-10" />
-          <div>
-            <h1 className="text-xl font-bold tracking-tight">Chaukas <span className="text-saffron">चौकस</span></h1>
-            <p className="text-xs text-slate-400">{t('tagline')}</p>
-          </div>
+          <img src="/favicon.svg" alt="" className="h-7 w-7" />
+          <span className="font-sans text-xs font-bold uppercase tracking-[0.08em]">Chaukas · चौकस</span>
         </div>
-        <div className="flex items-center gap-2">
-          <div role="group" aria-label="Language" className="flex overflow-hidden rounded-xl border border-edge text-xs">
+        <div className="flex items-center gap-3">
+          <div role="group" aria-label="Language" className="flex items-center gap-4 font-sans text-xs">
             {LANGS.map((l) => (
               <button
                 key={l.code}
                 onClick={() => changeLang(l.code)}
                 aria-pressed={lang === l.code}
-                className={`px-3 py-2 transition ${lang === l.code ? 'bg-saffron font-semibold text-ink' : 'text-slate-300 hover:bg-white/5'}`}
+                className={`py-2 transition-colors duration-200 hover:text-ink ${lang === l.code ? 'font-semibold text-ink underline underline-offset-4' : 'text-cloud'}`}
               >
                 {l.label}
               </button>
             ))}
           </div>
           {user && (
-            <button className="btn-ghost !px-3 !py-2 text-xs" onClick={signOut} title={user.email}>
+            <button className="btn-ghost !px-3 !py-1.5 !text-xs" onClick={signOut} title={user.email}>
               {t('signOut')}
             </button>
           )}
         </div>
       </header>
 
-      <nav className="mb-5 grid grid-cols-3 gap-2" role="tablist">
+      <section className="mb-12 grid gap-6 md:grid-cols-12 md:gap-16">
+        <h1 className="display md:col-span-7">Pause before you pay.</h1>
+        <p className="text-[18px] text-slatem md:col-span-5 md:pt-3 md:text-[20px]">{t('tagline')}</p>
+      </section>
+
+      <nav className="mb-8 flex gap-8 border-b border-stone font-sans" role="tablist">
         {TABS.map((id) => (
           <button
             key={id}
             role="tab"
             aria-selected={tab === id}
             onClick={() => setTab(id)}
-            className={`relative rounded-xl border px-3 py-2.5 text-sm font-semibold transition ${
-              tab === id ? 'border-saffron bg-saffron/10 text-saffron' : 'border-edge text-slate-300 hover:bg-white/5'
+            className={`relative -mb-px border-b-2 py-3 text-base font-medium transition-colors duration-200 ${
+              tab === id ? 'border-ink text-ink' : 'border-transparent text-cloud hover:text-ink'
             }`}
           >
             {t(id === 'check' ? 'tabCheck' : id === 'golden' ? 'tabGolden' : 'tabFamily')}
             {id === 'family' && unread > 0 && (
-              <span className="absolute -right-1 -top-1 rounded-full bg-danger px-1.5 text-[10px] font-bold text-white">{unread}</span>
+              <span className="ml-2 font-sans text-xs font-semibold">({unread})</span>
             )}
           </button>
         ))}
@@ -121,14 +123,14 @@ export default function App() {
 
       <main>
         {tab === 'check' && <CheckTab t={t} lang={lang} aiMode={ai} />}
-        {tab !== 'check' && booting && <p className="text-slate-400">{t('loading')}</p>}
+        {tab !== 'check' && booting && <p className="text-slatem">{t('loading')}</p>}
         {tab !== 'check' && !booting && !user && <AuthPanel t={t} lang={lang} onAuth={onAuth} note={tab === 'golden' ? t('goldenNeedLogin') : null} />}
         {tab === 'golden' && user && <GoldenTab t={t} lang={lang} />}
         {tab === 'family' && user && <FamilyTab t={t} onRead={refreshUnread} />}
       </main>
 
-      <footer className="mt-10 text-center text-xs text-slate-500">
-        {t('noSafe')} · cybercrime helpline <span className="font-mono text-slate-300">1930</span>
+      <footer className="mt-24 border-t border-stone pt-6 font-sans text-xs text-slatem">
+        {t('noSafe')} · cybercrime helpline <span className="font-mono">1930</span>
       </footer>
     </div>
   );

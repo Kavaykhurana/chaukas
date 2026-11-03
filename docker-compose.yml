@@ -1,0 +1,44 @@
+# One command: docker compose up --build   ->  http://localhost:3000
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: chaukas
+      POSTGRES_USER: chaukas
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-chaukas}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chaukas -d chaukas"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build: ./backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_HOST: db
+      DB_NAME: chaukas
+      DB_USER: chaukas
+      DB_PASSWORD: ${DB_PASSWORD:-chaukas}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-not-set}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.0-flash}
+      JWT_SECRET: ${JWT_SECRET:-chaukas-compose-secret-change-before-real-use-0123456789}
+      CORS_ORIGINS: http://localhost:3000
+      SEED_DEMO: ${SEED_DEMO:-true}
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+
+volumes:
+  pgdata:

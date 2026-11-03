@@ -1,0 +1,11 @@
+# Activated with SPRING_PROFILES_ACTIVE=prod (docker-compose and render.yaml both do this).
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:chaukas}}
+    username: ${DB_USER:chaukas}
+    password: ${DB_PASSWORD:chaukas}
+    hikari:
+      maximum-pool-size: 8
+
+chaukas:
+  seed-demo: ${SEED_DEMO:false}

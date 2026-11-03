@@ -1,0 +1,35 @@
+# Render Blueprint: Postgres + Spring Boot API (Docker). Host the frontend on Vercel (see frontend/vercel.json).
+databases:
+  - name: chaukas-db
+    plan: free
+    databaseName: chaukas
+    user: chaukas
+
+services:
+  - type: web
+    name: chaukas-api
+    runtime: docker
+    rootDir: backend
+    plan: free
+    healthCheckPath: /actuator/health/liveness
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: DB_HOST
+        fromDatabase: { name: chaukas-db, property: host }
+      - key: DB_PORT
+        fromDatabase: { name: chaukas-db, property: port }
+      - key: DB_NAME
+        fromDatabase: { name: chaukas-db, property: database }
+      - key: DB_USER
+        fromDatabase: { name: chaukas-db, property: user }
+      - key: DB_PASSWORD
+        fromDatabase: { name: chaukas-db, property: password }
+      - key: JWT_SECRET
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false        # set to your Vercel URL, e.g. https://chaukas.vercel.app
+      - key: SEED_DEMO
+        value: "true"      # demo logins for judges; set to false for real users

@@ -1,0 +1,61 @@
+server:
+  port: ${PORT:8080}
+  shutdown: graceful
+
+spring:
+  application:
+    name: chaukas-api
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    # Zero-setup default: in-memory H2 in PostgreSQL mode. Real deployments use the "prod" profile.
+    url: jdbc:h2:mem:chaukas;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none        # Flyway owns the schema
+  flyway:
+    enabled: true
+  servlet:
+    multipart:
+      max-file-size: 6MB
+      max-request-size: 14MB
+  ai:
+    openai:
+      # Gemini via Google's OpenAI-compatible endpoint. No key set => AI is skipped and rules+intel still answer.
+      api-key: ${GEMINI_API_KEY:not-set}
+      base-url: https://generativelanguage.googleapis.com/v1beta/openai
+      chat:
+        completions-path: /chat/completions
+        options:
+          model: ${GEMINI_MODEL:gemini-2.0-flash}
+          temperature: 0.1
+
+chaukas:
+  ai:
+    enabled: ${CHAUKAS_AI_ENABLED:true}
+    timeout-seconds: ${CHAUKAS_AI_TIMEOUT:10}
+  jwt:
+    secret: ${JWT_SECRET:chaukas-dev-only-secret-change-me-please-0123456789}
+    ttl-hours: 72
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:3000}
+  golden-hour-minutes: 60
+  seed-demo: ${SEED_DEMO:true}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+logging:
+  level:
+    in.chaukas: INFO
